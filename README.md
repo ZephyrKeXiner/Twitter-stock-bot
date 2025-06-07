@@ -2,27 +2,12 @@
 
 This project is a daily market bot that retrieves and shares cryptocurrency prices and financial news on Twitter. It utilizes various APIs to gather data and automate the tweeting process.
 
-## Project Structure
-
-```
-daily_market_bot
-├── src
-│   ├── main.py               # Entry point of the application
-│   ├── services              # Contains service modules for different functionalities
-│   │   ├── twitter_service.py # Handles interactions with the Twitter API
-│   │   ├── crypto_service.py  # Fetches cryptocurrency data from CoinGecko API
-│   │   └── news_service.py    # Retrieves financial news from Finnhub API
-│   └── utils
-│       └── config.py         # Manages configuration and API keys
-├── requirements.txt          # Lists required Python libraries and dependencies
-└── README.md                 # Project documentation
-```
-
 ## Features
 
 - Fetches real-time cryptocurrency prices for Bitcoin and Ethereum.
 - Retrieves the latest financial news articles.
 - Automatically posts updates to Twitter with market data and news.
+- **Supports scheduled execution via GitHub Actions.**
 
 ## Installation
 
@@ -41,9 +26,20 @@ daily_market_bot
 
 ## Usage
 
-Run the application using:
+Run the application manually using:
 ```
 python src/main.py
 ```
 
-This will trigger the bot to fetch the latest cryptocurrency prices and financial news, and post them to Twitter.
+### Scheduled Execution
+
+This project includes a GitHub Actions workflow to run the bot daily at 8:00 UTC. To enable this:
+
+1. Add your API keys as GitHub Secrets:
+   - `API_KEY`
+   - `API_SECRET`
+   - `ACCESS_TOKEN`
+   - `ACCESS_TOKEN_SECRET`
+   - `FINNHUB_API_KEY`
+
+2. Push the repository to GitHub. The workflow will automatically execute based on the schedule defined in `.github/workflows/schedule_tweet.yml`.
