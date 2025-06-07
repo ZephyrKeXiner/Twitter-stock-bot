@@ -1,12 +1,10 @@
-name: Schedule Tweet
+name: Test Tweet
 
 on:
-  schedule:
-    # 每天 UTC 时间 14:00 运行
-    - cron: '0 14 * * *'
+  workflow_dispatch: # 手动触发
 
 jobs:
-  tweet:
+  test-tweet:
     runs-on: ubuntu-latest
 
     steps:
