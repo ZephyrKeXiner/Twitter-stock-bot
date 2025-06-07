@@ -1,8 +1,8 @@
 import requests
 from utils.config import Config
 
-class NewsService:
-    def get_stock_news(self):
+class StocksService:
+    def get_stock_prices(self):
         url = f"https://finnhub.io/api/v1/news?category=general&token={Config().FINNHUB_API_KEY}"
         try:
             r = requests.get(url).json()
