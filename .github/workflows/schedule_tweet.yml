@@ -3,7 +3,7 @@ name: Schedule Tweet
 on:
   schedule:
     # 每天 UTC 时间 14:00 运行
-    - cron: '0 14 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   tweet:

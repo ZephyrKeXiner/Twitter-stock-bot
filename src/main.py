@@ -14,9 +14,38 @@ def build_market_tweet(crypto_data):
     tweet += "\n#美股 #加密货币 #投资"
     return tweet
 
+def safe_post(twitter_service, text, reply_id=None):
+    if len(text) > 260:
+        raise Exception(f"❗ 推文长度超限：{len(text)} 字，最大允许 260 字")
+    return twitter_service.post_tweet(text, in_reply_to_tweet_id=reply_id)
+
+def post_long_tweet(ts, text):
+    # 将文本拆分为多个不超 260 字的部分，依次发送并建立回复链
+    parts = []
+    while len(text) > 260:
+        chunk = text[:260]
+        sep = max(chunk.rfind('\n'), chunk.rfind(' '))
+        if sep > 0:
+            parts.append(chunk[:sep])
+            text = text[sep:].lstrip()
+        else:
+            parts.append(chunk)
+            text = text[260:]
+    parts.append(text)
+
+    reply_id = None
+    resp = None
+    for part in parts:
+        resp = ts.post_tweet(part, in_reply_to_tweet_id=reply_id)
+        reply_id = resp.data["id"]
+    return resp
 
 def main():
     try:
+        # 验证 API 凭据
+        twitter_service = TwitterService()
+        print(twitter_service.verify_credentials())
+
         # 获取数据
         crypto_service = CryptoService()
         crypto_data = crypto_service.get_crypto_prices()
@@ -35,21 +64,10 @@ def main():
         tweet_content = market_tweet + "\n\n" + events_text + "\n\n" + news
 
         if debug_mode:
-            print("🛠 调试模式启用")
-            print("构造的推文内容:")
-            print(tweet_content)
+            print("🛠 调试模式启用\n", tweet_content)
         else:
-            # 发推
-            twitter_service = TwitterService()
-            if len(tweet_content) <= 280:
-                twitter_service.post_tweet(tweet_content)
-            else:
-                response = twitter_service.post_tweet(market_tweet)
-                tweet_id = response.data["id"]
-                # 事件和新闻分开发送
-                twitter_service.post_tweet(events_text, in_reply_to_tweet_id=tweet_id)
-                twitter_service.post_tweet(news, in_reply_to_tweet_id=tweet_id)
-
+            # 使用 post_long_tweet 自动拆分并发送
+            post_long_tweet(twitter_service, tweet_content)
             print("✅ 推文成功发送")
 
     except Exception as e:

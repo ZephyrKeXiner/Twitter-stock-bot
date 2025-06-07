@@ -12,4 +12,14 @@ class TwitterService:
         )
 
     def post_tweet(self, text, in_reply_to_tweet_id=None):
-        return self.client.create_tweet(text=text, in_reply_to_tweet_id=in_reply_to_tweet_id)
+        try:
+            return self.client.create_tweet(text=text, in_reply_to_tweet_id=in_reply_to_tweet_id)
+        except tweepy.TweepyException as e:
+            raise Exception(f"❗ 推文失败: {e}")
+
+    def verify_credentials(self):
+        try:
+            user = self.client.get_me()
+            return f"✅ API 凭据有效，当前用户: {user.data['username']}"
+        except tweepy.TweepyException as e:
+            raise Exception(f"❗ API 凭据验证失败: {e}")

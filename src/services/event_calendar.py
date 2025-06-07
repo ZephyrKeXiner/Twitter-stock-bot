@@ -7,7 +7,7 @@ class EventCalendar:
 
     def _get_events_by_country(self, countries) -> str:
         today = datetime.now()
-        tomorrow = today + timedelta(days=3)
+        tomorrow = today + timedelta(days=1)
 
         from_date = today.strftime('%d/%m/%Y')
         to_date = tomorrow.strftime('%d/%m/%Y')
