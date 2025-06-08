@@ -29,4 +29,6 @@ jobs:
         ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
         FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         DEBUG_MODE: ${{ secrets.DEBUG_MODE }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        CHAT_ID: ${{ secrets.CHAT_ID}}
       run: python src/main.py
