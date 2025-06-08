@@ -2,8 +2,11 @@ from services.twitter_service import TwitterService
 from services.crypto_service import CryptoService
 from services.news_service import NewsService
 from services.event_calendar import EventCalendar
+from services.telegtam_bot_service import TelegramBot
 from datetime import datetime
 import os
+
+send_way = 'telegram'
 
 def build_market_tweet(crypto_data):
     now = datetime.now().strftime("%Y-%m-%d")
@@ -42,10 +45,6 @@ def post_long_tweet(ts, text):
 
 def main():
     try:
-        # 验证 API 凭据
-        twitter_service = TwitterService()
-        print(twitter_service.verify_credentials())
-
         # 获取数据
         crypto_service = CryptoService()
         crypto_data = crypto_service.get_crypto_prices()
@@ -56,20 +55,22 @@ def main():
         events_text = calendar.get_us_events_today()
 
         # 构造推文
-        market_tweet = build_market_tweet(crypto_data)
-
-        # 检查调试模式
-        debug_mode = os.getenv("DEBUG_MODE", "false").lower() == "true"
-
-        tweet_content = market_tweet + "\n\n" + events_text + "\n\n" + news
-
-        if debug_mode:
-            print("🛠 调试模式启用\n", tweet_content)
-        else:
-            # 使用 post_long_tweet 自动拆分并发送
-            post_long_tweet(twitter_service, tweet_content)
-            print("✅ 推文成功发送")
-
+        market_message = build_market_tweet(crypto_data)
+        tweet_content = market_message + "\n\n" + events_text + "\n\n" + news
+        if send_way == 'twitter':
+          # 检查调试模式
+          debug_mode = os.getenv("DEBUG_MODE", "false").lower() == "true"
+          if debug_mode:
+              print("🛠 调试模式启用\n", tweet_content)
+          else:
+              twitter_service = TwitterService()
+              print(twitter_service.verify_credentials())
+              # 使用 post_long_tweet 自动拆分并发送
+              post_long_tweet(twitter_service, tweet_content)
+              print("✅ 推文成功发送")
+        elif send_way == 'telegram':
+          telegram_bot = TelegramBot()
+          telegram_bot.send_telegram_message(tweet_content)
     except Exception as e:
         print("❌ 出错了:", e)
 
