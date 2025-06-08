@@ -11,3 +11,4 @@ class Config:
     FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
     BOT_TOKEN = os.getenv("BOT_TOKEN")
     CHAT_ID = os.getenv("CHAT_ID")
+    LLM_API_TOKEN = os.getenv("LLM_API_TOKEN")

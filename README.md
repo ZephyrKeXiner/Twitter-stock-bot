@@ -40,6 +40,9 @@ This project includes a GitHub Actions workflow to run the bot daily at 8:00 UTC
    - `API_SECRET`
    - `ACCESS_TOKEN`
    - `ACCESS_TOKEN_SECRET`
-   - `FINNHUB_API_KEY`
+   - `DEBUG_MODE`
+   - `BOT_TOKEN`
+   - `CHAT_ID`
+   - `LLM_API_TOKEN`
 
-2. Push the repository to GitHub. The workflow will automatically execute based on the schedule defined in `.github/workflows/schedule_tweet.yml`.
+2. Push the repository to GitHub. The workflow will automatically execute based on the schedule defined in `.github/workflows/schedule_tweet.yml` or `.github/workflows/test_tweet.yml`.

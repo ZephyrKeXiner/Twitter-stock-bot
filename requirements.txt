@@ -4,3 +4,4 @@ tweepy
 datetime
 python-dotenv
 investpy
+google-genai

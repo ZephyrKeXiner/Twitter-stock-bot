@@ -3,7 +3,9 @@ from services.crypto_service import CryptoService
 from services.news_service import NewsService
 from services.event_calendar import EventCalendar
 from services.telegtam_bot_service import TelegramBot
+from services.ai_service import SummaryGenerator
 from datetime import datetime
+
 import os
 
 send_way = 'telegram'
@@ -53,10 +55,12 @@ def main():
         news = news_service.get_stock_news()
         calendar = EventCalendar()
         events_text = calendar.get_us_events_today()
+        ai = SummaryGenerator()
+        summary = ai.generate_summary(news, events_text)
 
         # 构造推文
         market_message = build_market_tweet(crypto_data)
-        tweet_content = market_message + "\n\n" + events_text + "\n\n" + news
+        tweet_content = market_message + "\n\n" + events_text + "\n\n" + news + "\n\n" + summary
         if send_way == 'twitter':
           # 检查调试模式
           debug_mode = os.getenv("DEBUG_MODE", "false").lower() == "true"
