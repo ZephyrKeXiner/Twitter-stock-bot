@@ -1,6 +1,5 @@
 yfinance
 requests
-tweepy
 datetime
 python-dotenv
 investpy

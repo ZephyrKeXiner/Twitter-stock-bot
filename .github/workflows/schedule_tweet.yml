@@ -1,4 +1,4 @@
-name: Schedule Tweet
+name: Schedule Telegram Message
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tweet:
+  message:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,10 +33,6 @@ jobs:
 
     - name: Run bot script
       env:
-        API_KEY: ${{ secrets.API_KEY }}
-        API_SECRET: ${{ secrets.API_SECRET }}
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
         FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         DEBUG_MODE: ${{ secrets.DEBUG_MODE }}
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
